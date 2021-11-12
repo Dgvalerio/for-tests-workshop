@@ -21,5 +21,8 @@ import { UserController } from './user/UserController';
 
   await user.delete(fromList[0].id);
 
-  console.log({ fromCreate, fromShow, fromList, fromUpdate });
+  console.table({ fromCreate });
+  console.table({ fromShow });
+  console.table(fromList);
+  console.table({ fromUpdate });
 })();
