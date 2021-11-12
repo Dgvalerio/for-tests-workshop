@@ -31,4 +31,18 @@ describe('TaskController', () => {
     expect(result).toHaveProperty('owner');
     expect(result).toHaveProperty('title');
   });
+
+  it('should return a list of tasks', async () => {
+    const createdTask: Task = await sut.create(makeTask());
+
+    const result: Task[] = await sut.list();
+
+    expect(Array.isArray(result)).toBeTruthy();
+    expect(result.length > 0).toBeTruthy();
+
+    const findResult = result.find((oneTask) => oneTask.id === createdTask.id);
+
+    expect(findResult).toBeDefined();
+    expect(findResult).toEqual(createdTask);
+  });
 });
