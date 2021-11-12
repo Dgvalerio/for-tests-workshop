@@ -54,4 +54,17 @@ describe('TaskController', () => {
     expect(result).toBeDefined();
     expect(result).toEqual(createdTask);
   });
+
+  it('should update a task', async () => {
+    const createdTask: Task = await sut.create(makeTask());
+
+    const newDescription = faker.random.words();
+
+    const result: Task = await sut.update(createdTask.id, {
+      description: newDescription,
+    });
+
+    expect(result).toBeDefined();
+    expect(result).toEqual({ ...createdTask, description: newDescription });
+  });
 });
