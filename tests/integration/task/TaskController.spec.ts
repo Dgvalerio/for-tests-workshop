@@ -67,4 +67,29 @@ describe('TaskController', () => {
     expect(result).toBeDefined();
     expect(result).toEqual({ ...createdTask, description: newDescription });
   });
+
+  it('should delete a task', async () => {
+    const createdTask: Task = await sut.create(makeTask());
+
+    const listBeforeDelete = await sut.list();
+    const findBeforeDelete = listBeforeDelete.find(
+      (oneTask) => oneTask.id === createdTask.id
+    );
+
+    const sizeBeforeDelete = listBeforeDelete.length;
+
+    expect(findBeforeDelete).toEqual(createdTask);
+
+    await sut.delete(createdTask.id);
+
+    const listAfterDelete = await sut.list();
+    const findAfterDelete = listAfterDelete.find(
+      (oneTask) => oneTask.id === createdTask.id
+    );
+
+    const sizeAfterDelete = listAfterDelete.length;
+
+    expect(findAfterDelete).toBeUndefined();
+    expect(sizeAfterDelete).toEqual(sizeBeforeDelete - 1);
+  });
 });
