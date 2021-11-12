@@ -8,7 +8,8 @@
   "scripts": {
     "start": "tsnd --respawn --transpile-only src/index.ts",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",
