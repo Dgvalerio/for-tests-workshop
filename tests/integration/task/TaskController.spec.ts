@@ -4,40 +4,53 @@ import { Task } from '../../../src/task/Task';
 import { TaskController } from '../../../src/task/TaskController';
 import { makeTask } from './utils/makeTask';
 
-const sut = new TaskController();
+const makeSut = (): TaskController => new TaskController();
 
 describe('TaskController', () => {
   it('should be defined', () => {
+    const sut = makeSut();
+
     expect(sut).toBeDefined();
   });
 
   it('should create a task', async () => {
-    const task = makeTask();
+    const sut = makeSut();
 
-    const result: Task = await sut.create(task);
+    // Obtendo dados de antes da criação
+    const listBeforeCreate = await sut.list();
+    const sizeBeforeCreate = listBeforeCreate.length;
 
-    expect(result).toBeDefined();
-    expect(result).toHaveProperty('id');
-    expect(result).toHaveProperty('description');
-    expect(result).toHaveProperty('owner');
-    expect(result).toHaveProperty('title');
+    // Criando a task
+    const createdTask: Task = await sut.create(makeTask());
+
+    // Obtendo dados de depois da criação
+    const listAfterCreate = await sut.list();
+    const sizeAfterCreate = listAfterCreate.length;
+
+    // Verificando se os do dados mudaram conforme a deveriam
+    expect(sizeAfterCreate).toEqual(sizeBeforeCreate + 1);
+
+    const findAfterCreate = listAfterCreate.find(
+      ({ id }) => id === createdTask.id
+    );
+
+    expect(createdTask).toEqual(findAfterCreate);
   });
 
   it('should return a list of tasks', async () => {
-    const createdTask: Task = await sut.create(makeTask());
+    const sut = makeSut();
+
+    await sut.create(makeTask());
 
     const result: Task[] = await sut.list();
 
     expect(Array.isArray(result)).toBeTruthy();
     expect(result.length > 0).toBeTruthy();
-
-    const findResult = result.find((oneTask) => oneTask.id === createdTask.id);
-
-    expect(findResult).toBeDefined();
-    expect(findResult).toEqual(createdTask);
   });
 
   it('should return a task', async () => {
+    const sut = makeSut();
+
     const createdTask: Task = await sut.create(makeTask());
 
     const result: Task = await sut.show(createdTask.id);
@@ -47,6 +60,8 @@ describe('TaskController', () => {
   });
 
   it('should update a task', async () => {
+    const sut = makeSut();
+
     const createdTask: Task = await sut.create(makeTask());
 
     const newDescription = faker.random.words();
@@ -60,27 +75,23 @@ describe('TaskController', () => {
   });
 
   it('should delete a task', async () => {
+    const sut = makeSut();
+
     const createdTask: Task = await sut.create(makeTask());
 
     const listBeforeDelete = await sut.list();
-    const findBeforeDelete = listBeforeDelete.find(
-      (oneTask) => oneTask.id === createdTask.id
-    );
-
     const sizeBeforeDelete = listBeforeDelete.length;
-
-    expect(findBeforeDelete).toEqual(createdTask);
 
     await sut.delete(createdTask.id);
 
     const listAfterDelete = await sut.list();
+    const sizeAfterDelete = listAfterDelete.length;
+
+    expect(sizeAfterDelete).toEqual(sizeBeforeDelete - 1);
+
     const findAfterDelete = listAfterDelete.find(
       (oneTask) => oneTask.id === createdTask.id
     );
-
-    const sizeAfterDelete = listAfterDelete.length;
-
     expect(findAfterDelete).toBeUndefined();
-    expect(sizeAfterDelete).toEqual(sizeBeforeDelete - 1);
   });
 });
