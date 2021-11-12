@@ -2,18 +2,9 @@ import * as faker from 'faker';
 
 import { Task } from '../../../src/task/Task';
 import { TaskController } from '../../../src/task/TaskController';
+import { makeTask } from './utils/makeTask';
 
 const sut = new TaskController();
-
-const makeTask = (withId?: boolean): Task | Omit<Task, 'id'> => {
-  const task = {
-    description: faker.random.words(),
-    owner: faker.random.alphaNumeric(),
-    title: faker.random.words(),
-  };
-
-  return withId ? { id: faker.random.alphaNumeric(), ...task } : task;
-};
 
 describe('TaskController', () => {
   it('should be defined', () => {
