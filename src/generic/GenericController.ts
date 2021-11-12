@@ -34,16 +34,25 @@ export class GenericController<Entity> {
   }
 
   /**
+   * Method to convert firebase node in a array of objects
+   * @param {object} node - firebase node
+   * @return {object[]}
+   * */
+  private static listAdapter<ObjectType>(node: object): ObjectType[] {
+    return Object.entries(node).map(([id, attributes]) => ({
+      id,
+      ...attributes,
+    }));
+  }
+
+  /**
    * Method to list a Generic
    * @return {[Object]}
    * */
   public async list(): Promise<Entity[]> {
     const { data }: AxiosResponse<Entity[]> = await api.get(this.mountRoute());
 
-    return Object.entries(data).map(([id, attributes]) => ({
-      id,
-      ...attributes,
-    }));
+    return GenericController.listAdapter(data);
   }
 
   /**
