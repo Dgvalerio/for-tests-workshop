@@ -1,4 +1,4 @@
-import { makeDummyUser } from '../collaborators/makeUser';
+import { makeDummyUsers } from '../collaborators';
 import { User } from '../types/user';
 
 // Function to sort users by name
@@ -9,11 +9,9 @@ const sortUsersByName = (users: User[]) =>
     else return 0;
   });
 
-// Dummy array of users
-const dummyUsers: User[] = Array.from({ length: 10 }, () => makeDummyUser());
-
 describe('Dummy Example', () => {
   it('should use a dummy and sort the users', () => {
+    const dummyUsers = makeDummyUsers();
     const out = sortUsersByName([...dummyUsers]);
 
     expect(

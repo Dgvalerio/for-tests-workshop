@@ -1,5 +1,5 @@
 // Example with email service
-import { makeDummyUser } from '../collaborators/makeUser';
+import { makeDummyUser } from '../collaborators';
 import { User } from '../types/user';
 
 /**
