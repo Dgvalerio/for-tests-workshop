@@ -1,10 +1,5 @@
-import faker from 'faker';
-
-// Type of User
-type User = {
-  name: string;
-  email: string;
-};
+import { makeDummyUser } from '../collaborators/makeUser';
+import { User } from '../types/user';
 
 // Function to sort users by name
 const sortUsersByName = (users: User[]) =>
@@ -13,12 +8,6 @@ const sortUsersByName = (users: User[]) =>
     if (currentUser.name.toLowerCase() < nextUser.name.toLowerCase()) return -1;
     else return 0;
   });
-
-// Function to create a dummy user
-const makeDummyUser = (): User => ({
-  name: faker.name.findName(),
-  email: faker.internet.email(),
-});
 
 // Dummy array of users
 const dummyUsers: User[] = Array.from({ length: 10 }, () => makeDummyUser());
