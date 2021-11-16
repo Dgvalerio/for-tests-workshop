@@ -80,7 +80,7 @@ class Validator {
  * Example of Validator Stub
  * @module Validator
  * */
-class ValidatorStub implements Partial<Validator> {
+class ValidatorMock implements Partial<Validator> {
   /**
    * method to validate if the entered field was entered
    * @param {Object} object - object of field.
@@ -153,7 +153,7 @@ class UserController {
 }
 
 const makeSut = () => {
-  const validator = new ValidatorStub();
+  const validator = new ValidatorMock();
   const sut = new UserController();
   sut.validator = validator as Validator;
 
